@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -18,6 +18,9 @@ import StoreIcon from '@material-ui/icons/Store';
 import BookIcon from '@material-ui/icons/Book';
 import logo from '../../assests/logo.png';
 import Vendors from './Vendors';
+import Photos from './Photos';
+import Wedding from './Wedding';
+import Blog from './Blog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,33 +89,18 @@ const useStyles = makeStyles((theme) => ({
 export default function Navbar() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [hoverStatus, setHoverStatus] = useState('false');
+  const [vendorHover, setVendorHover] = useState(false);
+  const [photosHover, setPhotosHover] = useState(false);
+  const [weddingHover, setWeddingHover] = useState(false);
+  const [blogHover, setBlogHover] = useState(false);
+  const [vendorColor, setVendorColor] = useState('#ffffff');
+  const [weddingColor, setWeddingColor] = useState('#ffffff');
+  const [photosColor, setPhotosColor] = useState('#ffffff');
+  const [blogColor, setBlogColor] = useState('#ffffff');
 
   const handleChange = (e, newvalue) => {
     setValue(newvalue);
   };
-
-  useEffect(() => {
-    console.log('hover', hoverStatus);
-  }, []);
-
-  //   const tabs=(
-  //       <React.Fragment>
-  //           <Tabs value={value}
-  //                       onChange={handleChange}
-  //                       className={classes.tabContainer}
-  //                       indicatorColor="primary">
-  //                           <Tab className={classes.tab}
-  //                             component={Link}
-  //                             label="Vendors"
-  //                             to="/vendors"/>
-  //                         <Tab className={classes.tab}
-  //                             component={Link}
-  //                             label="Weddings"
-  //                             to="/weddings"/>
-  //           </Tabs>
-  //       </React.Fragment>
-  //   )
 
   return (
     <div className={classes.root}>
@@ -127,24 +115,61 @@ export default function Navbar() {
             variant='scrollable'
             scrollButtons='on'
             indicatorColor='primary'
-            textColor='white'
+            // textColor='white'
             aria-label='scrollable force tabs example'
           >
             <Tab
-              onMouseEnter={() => {
-                console.log('hello');
-                setHoverStatus(true);
+              onMouseEnter={(e) => {
+                setVendorHover(true);
+                setVendorColor('#FFFF00');
               }}
-              onMouseLeave={() => {
-                console.log('hello');
-                setHoverStatus(false);
+              onMouseLeave={(e) => {
+                setVendorHover(false);
+                setVendorColor('#ffffff');
               }}
-              label='Vendors'
+              label={<span style={{ color: vendorColor }}>Vendors</span>}
               icon={<StoreIcon />}
             />
-            <Tab label='Photos' icon={<PhotoIcon />} />
-            <Tab label='Wedding' icon={<ShoppingBasket />} />
-            <Tab label='Blog' icon={<BookIcon />} />
+
+            <Tab
+              onMouseEnter={(e) => {
+                console.log('hello', e.target.value);
+                setWeddingHover(true);
+                setWeddingColor('#FFFF00');
+              }}
+              onMouseLeave={(e) => {
+                setWeddingHover(false);
+                setWeddingColor('#ffffff');
+              }}
+              label={<span style={{ color: weddingColor }}>Wedding</span>}
+              icon={<ShoppingBasket />}
+            />
+            <Tab
+              onMouseEnter={(e) => {
+                console.log('hello', e.target.value);
+                setPhotosHover(true);
+                setPhotosColor('#FFFF00');
+              }}
+              onMouseLeave={(e) => {
+                setPhotosHover(false);
+                setPhotosColor('#FFFFFF');
+              }}
+              label={<span style={{ color: photosColor }}>Photos</span>}
+              icon={<BookIcon />}
+            />
+            <Tab
+              onMouseEnter={(e) => {
+                console.log('hello', e.target.value);
+                setBlogHover(true);
+                setBlogColor('#FFFF00');
+              }}
+              onMouseLeave={(e) => {
+                setBlogHover(false);
+                setBlogColor('#FFFFFF');
+              }}
+              label={<span style={{ color: blogColor }}>Blog</span>}
+              icon={<PhotoIcon />}
+            />
           </Tabs>
 
           {/* <Typography className={classes.title} variant="h6" noWrap>
@@ -167,7 +192,10 @@ export default function Navbar() {
           <Button color='inherit'>Login</Button>
         </Toolbar>
       </AppBar>
-      {hoverStatus == true ? <Vendors /> : null}
+      {blogHover === true ? <Blog /> : null}
+      {vendorHover === true ? <Vendors /> : null}
+      {photosHover === true ? <Photos /> : null}
+      {weddingHover === true ? <Wedding /> : null}
     </div>
   );
 }
