@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -7,16 +7,17 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 // import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import {Link} from 'react-router-dom'
-import Button from '@material-ui/core/Button'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
+import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 import PhotoIcon from '@material-ui/icons/Photo';
 import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
 import StoreIcon from '@material-ui/icons/Store';
 import BookIcon from '@material-ui/icons/Book';
-import logo from '../../assests/logo.png'
+import logo from '../../assests/logo.png';
+import Vendors from './Vendors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,15 +56,15 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  logo:{
-    height:"8em",
-    [theme.breakpoints.down("md")]:{
-        height:"7em"
+  logo: {
+    height: '8em',
+    [theme.breakpoints.down('md')]: {
+      height: '7em',
     },
-    [theme.breakpoints.down("xs")]:{
-        height:"5.5em"
-    }
-},
+    [theme.breakpoints.down('xs')]: {
+      height: '5.5em',
+    },
+  },
   inputRoot: {
     color: 'inherit',
   },
@@ -84,77 +85,89 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
   const classes = useStyles();
-  const [value,setValue]=React.useState(0)
+  const [value, setValue] = React.useState(0);
+  const [hoverStatus, setHoverStatus] = useState('false');
 
-  const handleChange=(e,newvalue)=>{
-    setValue(newvalue)
-    }
+  const handleChange = (e, newvalue) => {
+    setValue(newvalue);
+  };
 
-//   const tabs=(
-//       <React.Fragment>
-//           <Tabs value={value}
-//                       onChange={handleChange}
-//                       className={classes.tabContainer}
-//                       indicatorColor="primary">
-//                           <Tab className={classes.tab} 
-//                             component={Link} 
-//                             label="Vendors"
-//                             to="/vendors"/>
-//                         <Tab className={classes.tab} 
-//                             component={Link} 
-//                             label="Weddings"
-//                             to="/weddings"/>
-//           </Tabs>
-//       </React.Fragment>
-//   )
+  useEffect(() => {
+    console.log('hover', hoverStatus);
+  }, []);
+
+  //   const tabs=(
+  //       <React.Fragment>
+  //           <Tabs value={value}
+  //                       onChange={handleChange}
+  //                       className={classes.tabContainer}
+  //                       indicatorColor="primary">
+  //                           <Tab className={classes.tab}
+  //                             component={Link}
+  //                             label="Vendors"
+  //                             to="/vendors"/>
+  //                         <Tab className={classes.tab}
+  //                             component={Link}
+  //                             label="Weddings"
+  //                             to="/weddings"/>
+  //           </Tabs>
+  //       </React.Fragment>
+  //   )
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{background:"#800000"}}>
+      <AppBar position='static' style={{ background: '#800000' }}>
         <Toolbar disableGutters={true}>
-        <Button   className={classes.logoContainer} disableRipple>
-                <img alt="company logo"  className={classes.logo} src={logo}/>
+          <Button className={classes.logoContainer} disableRipple>
+            <img alt='company logo' className={classes.logo} src={logo} />
+          </Button>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            variant='scrollable'
+            scrollButtons='on'
+            indicatorColor='primary'
+            textColor='white'
+            aria-label='scrollable force tabs example'
+          >
+            <Tab
+              onMouseEnter={() => {
+                console.log('hello');
+                setHoverStatus(true);
+              }}
+              onMouseLeave={() => {
+                console.log('hello');
+                setHoverStatus(false);
+              }}
+              label='Vendors'
+              icon={<StoreIcon />}
+            />
+            <Tab label='Photos' icon={<PhotoIcon />} />
+            <Tab label='Wedding' icon={<ShoppingBasket />} />
+            <Tab label='Blog' icon={<BookIcon />} />
+          </Tabs>
 
-         </Button>
-         <Tabs
-          value={value}
-          onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="on"
-          indicatorColor="primary"
-          textColor="white"
-          aria-label="scrollable force tabs example"
-        >
-          <Tab label="Vendors" icon={<StoreIcon />} />
-          <Tab label="Photos" icon={<PhotoIcon />}  />
-          <Tab label="Wedding" icon={<ShoppingBasket />}  />
-          <Tab label="Blog" icon={<BookIcon />}  />
-          
-        </Tabs>
-          
           {/* <Typography className={classes.title} variant="h6" noWrap>
           
           </Typography> */}
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
-              
             </div>
-            
+
             <InputBase
-              placeholder="Search…"
+              placeholder='Search…'
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
             />
-           
           </div>
-          <Button color="inherit">Login</Button>
+          <Button color='inherit'>Login</Button>
         </Toolbar>
       </AppBar>
-      
+      {hoverStatus == true ? <Vendors /> : null}
     </div>
   );
 }
