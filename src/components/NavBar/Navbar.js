@@ -6,11 +6,14 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 // import MenuIcon from '@material-ui/icons/Menu';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import { useSelector, useDispatch } from 'react-redux';
+import { setAuth } from '../../redux/login/loginActions';
 
 import PhotoIcon from '@material-ui/icons/Photo';
 import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
@@ -97,11 +100,25 @@ export default function Navbar() {
   const [weddingColor, setWeddingColor] = useState('#ffffff');
   const [photosColor, setPhotosColor] = useState('#ffffff');
   const [blogColor, setBlogColor] = useState('#ffffff');
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [style, setStyle] = useState({ display: 'none' });
+
+  const isAuthenticated = useSelector((state) => state.auth.auths);
+  const dispatch = useDispatch();
+
+  const handleCallback = (childData) => {
+    // this.setState({ data: childData });
+    // setIsAuthenticated(childData);
+  };
 
   const handleChange = (e, newvalue) => {
     setValue(newvalue);
   };
+  // const handleVe = (e) => {
+  //   setVendorHover(true);
 
+  //   setVendorColor('#FFFF00');
+  // };
   return (
     <div className={classes.root}>
       <AppBar position='static' style={{ background: '#800000' }}>
@@ -116,65 +133,36 @@ export default function Navbar() {
             scrollButtons='on'
             indicatorColor='primary'
             // textColor='white'
+            inkBarStyle={{ background: 'blue' }}
             aria-label='scrollable force tabs example'
+            // TabIndicatorProps={{ style: { background: '#000000' } }}
           >
             <Tab
-              onMouseEnter={(e) => {
-                setVendorHover(true);
-                setVendorColor('#FFFF00');
-              }}
-              onMouseLeave={(e) => {
-                setVendorHover(false);
-                setVendorColor('#ffffff');
-              }}
-              label={<span style={{ color: vendorColor }}>Vendors</span>}
+              label='Vendors'
+              // onClick={
+              //   (e) => handleVe(e)
+              // setVendorHover(true);
+              // setVendorColor('#FFFF00');
+              // }
+              component={Link}
+              to={{ pathname: '/vendors', isAuthenticated: isAuthenticated }}
               icon={<StoreIcon />}
             />
 
             <Tab
-              onMouseEnter={(e) => {
-                console.log('hello', e.target.value);
-                setWeddingHover(true);
-                setWeddingColor('#FFFF00');
-              }}
-              onMouseLeave={(e) => {
-                setWeddingHover(false);
-                setWeddingColor('#ffffff');
-              }}
               label={<span style={{ color: weddingColor }}>Wedding</span>}
               icon={<ShoppingBasket />}
             />
             <Tab
-              onMouseEnter={(e) => {
-                console.log('hello', e.target.value);
-                setPhotosHover(true);
-                setPhotosColor('#FFFF00');
-              }}
-              onMouseLeave={(e) => {
-                setPhotosHover(false);
-                setPhotosColor('#FFFFFF');
-              }}
               label={<span style={{ color: photosColor }}>Photos</span>}
               icon={<BookIcon />}
             />
             <Tab
-              onMouseEnter={(e) => {
-                console.log('hello', e.target.value);
-                setBlogHover(true);
-                setBlogColor('#FFFF00');
-              }}
-              onMouseLeave={(e) => {
-                setBlogHover(false);
-                setBlogColor('#FFFFFF');
-              }}
               label={<span style={{ color: blogColor }}>Blog</span>}
               icon={<PhotoIcon />}
             />
           </Tabs>
 
-          {/* <Typography className={classes.title} variant="h6" noWrap>
-          
-          </Typography> */}
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -189,9 +177,46 @@ export default function Navbar() {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-          <Button color='inherit'>Login</Button>
+
+          {isAuthenticated ? (
+            <Button
+              color='inherit'
+              onClick={() => {
+                // setIsAuthenticated(false);
+                dispatch(setAuth(false));
+              }}
+            >
+              Click to Logout
+            </Button>
+          ) : (
+            <Button
+              color='inherit'
+              onClick={() => {
+                // setIsAuthenticated(true);
+                dispatch(setAuth(true));
+              }}
+            >
+              Click to Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
+
+      {/* <div
+        style={{
+          border: '1px solid gray',
+          width: 300,
+          height: 300,
+          padding: 10,
+          margin: 100,
+        }}
+        onMouseEnter={(e) => {
+          setStyle({ display: 'block' });
+        }}
+        onMouseLeave={(e) => {
+          setStyle({ display: 'none' });
+        }}
+      ></div> */}
       {blogHover === true ? <Blog /> : null}
       {vendorHover === true ? <Vendors /> : null}
       {photosHover === true ? <Photos /> : null}
