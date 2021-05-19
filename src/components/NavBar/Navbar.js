@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(Number);
   const [vendorHover, setVendorHover] = useState(false);
   const [photosHover, setPhotosHover] = useState(false);
   const [weddingHover, setWeddingHover] = useState(false);
@@ -105,13 +105,10 @@ export default function Navbar() {
 
   const isAuthenticated = useSelector((state) => state.auth.auths);
   const dispatch = useDispatch();
-
-  const handleCallback = (childData) => {
-    // this.setState({ data: childData });
-    // setIsAuthenticated(childData);
-  };
+  // const [value, setValue] = useState(Number);
 
   const handleChange = (e, newvalue) => {
+    console.log('n', newvalue);
     setValue(newvalue);
   };
   // const handleVe = (e) => {
@@ -133,31 +130,30 @@ export default function Navbar() {
             scrollButtons='on'
             indicatorColor='primary'
             // textColor='white'
-            inkBarStyle={{ background: 'blue' }}
+            backgroundColor='#801A17'
+            background='#801A17'
             aria-label='scrollable force tabs example'
-            // TabIndicatorProps={{ style: { background: '#000000' } }}
           >
             <Tab
               label='Vendors'
-              // onClick={
-              //   (e) => handleVe(e)
-              // setVendorHover(true);
-              // setVendorColor('#FFFF00');
-              // }
+              style={{ 'background-color': value === 0 ? 'yellow' : '#801A17' }}
               component={Link}
               to={{ pathname: '/vendors', isAuthenticated: isAuthenticated }}
               icon={<StoreIcon />}
             />
 
             <Tab
+              style={{ 'background-color': value === 1 ? 'yellow' : '#801A17' }}
               label={<span style={{ color: weddingColor }}>Wedding</span>}
               icon={<ShoppingBasket />}
             />
             <Tab
+              style={{ 'background-color': value === 2 ? 'yellow' : '#801A17' }}
               label={<span style={{ color: photosColor }}>Photos</span>}
               icon={<BookIcon />}
             />
             <Tab
+              style={{ 'background-color': value === 3 ? 'yellow' : '#801A17' }}
               label={<span style={{ color: blogColor }}>Blog</span>}
               icon={<PhotoIcon />}
             />
