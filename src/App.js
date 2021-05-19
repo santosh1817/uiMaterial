@@ -7,21 +7,17 @@ import Navbar from './components/NavBar/Navbar';
 import Login from './components/NavBar/Login';
 import Vendors from './components/NavBar/Vendors';
 import Blog from './components/NavBar/Blog';
+import Home from './components/NavBar/Home';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const handleCallback = (childData) => {
-    // this.setState({ data: childData });
-    setIsAuthenticated(childData);
-  };
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         {/* <BrowserRouter> */}
-        <Navbar  />
+        <Navbar />
 
         <Switch>
+          <Route path='/' component={Home} exact={true} />
           <Route path='/login' component={Login} exact={true} />
           <Route path='/vendors' component={Vendors} exact={true} />
           <Route path='/blog' component={Blog} exact={true} />

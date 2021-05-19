@@ -25,7 +25,7 @@ const Login =(props)=>{
     return(
         <>
         <h1>welcome to login</h1>
-        <Button onClick={()=>{
+        <Button color='primary'onClick={()=>{
          handleClick() 
         }}>Click to Login</Button>
         {alert && <h1>{alert}</h1>}

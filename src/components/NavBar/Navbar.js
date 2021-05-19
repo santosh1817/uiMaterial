@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 // import MenuIcon from '@material-ui/icons/Menu';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, withRouter } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
@@ -89,9 +89,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Navbar() {
+function Navbar(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(Number);
+  const [value, setValue] = React.useState(0);
   const [vendorHover, setVendorHover] = useState(false);
   const [photosHover, setPhotosHover] = useState(false);
   const [weddingHover, setWeddingHover] = useState(false);
@@ -121,7 +121,9 @@ export default function Navbar() {
       <AppBar position='static' style={{ background: '#800000' }}>
         <Toolbar disableGutters={true}>
           <Button className={classes.logoContainer} disableRipple>
-            <img alt='company logo' className={classes.logo} src={logo} />
+            <Link to='/'>
+              <img alt='company logo' className={classes.logo} src={logo} />
+            </Link>
           </Button>
           <Tabs
             value={value}
@@ -176,23 +178,24 @@ export default function Navbar() {
 
           {isAuthenticated ? (
             <Button
-              color='inherit'
+              color='######'
               onClick={() => {
                 // setIsAuthenticated(false);
                 dispatch(setAuth(false));
+                props.history.push('/login');
               }}
             >
-              Click to Logout
+              <Link to='/login'>Click to Logout</Link>
             </Button>
           ) : (
             <Button
-              color='inherit'
-              onClick={() => {
-                // setIsAuthenticated(true);
-                dispatch(setAuth(true));
-              }}
+              color='secondary'
+              // onClick={() => {
+              //   // setIsAuthenticated(true);
+              //   dispatch(setAuth(true));
+              // }}
             >
-              Click to Login
+              <Link to='/login'>Click to Login</Link>
             </Button>
           )}
         </Toolbar>
@@ -220,3 +223,4 @@ export default function Navbar() {
     </div>
   );
 }
+export default withRouter(Navbar);

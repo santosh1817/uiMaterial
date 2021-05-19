@@ -13,7 +13,7 @@ export default createMuiTheme({
       main: `#801A17`,
     },
     secondary: {
-      main: `${arcOrange}`,
+      main: `#ffffff`,
     },
   },
   ripple: {
